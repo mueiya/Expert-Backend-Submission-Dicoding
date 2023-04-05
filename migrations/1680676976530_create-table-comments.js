@@ -9,6 +9,10 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
+    date: {
+      typeof: 'TEXT',
+      notNull: true,
+    },
     thread: {
       type: 'VARCHAR(50)',
       notNull: true,
