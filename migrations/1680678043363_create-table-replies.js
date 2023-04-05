@@ -11,7 +11,7 @@ exports.up = (pgm) => {
     },
     date: {
       type: 'TEXT',
-      notNull: true
+      notNull: true,
     },
     comment: {
       type: 'VARCHAR(50)',

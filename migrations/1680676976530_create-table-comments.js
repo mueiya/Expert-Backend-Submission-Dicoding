@@ -10,7 +10,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     date: {
-      typeof: 'TEXT',
+      type: 'TEXT',
       notNull: true,
     },
     thread: {
