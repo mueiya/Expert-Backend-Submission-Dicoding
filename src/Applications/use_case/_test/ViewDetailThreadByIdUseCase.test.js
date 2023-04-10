@@ -16,23 +16,6 @@ describe('GetDetailThreadByIdUseCase', () => {
     /**
      * create cascading expected object
      */
-    const expectedComment = [
-      {
-        id: 'comment-1234',
-        username: 'notmueiya',
-        date: '2021-08-08T07:20:09.775Z',
-        replies: [{}],
-        content: 'Akhirnya aku bisa bernapas',
-      },
-      {
-        id: 'comment-3224',
-        username: 'somewhere over the raibow',
-        date: '2021-08-08T07:50:09.775Z',
-        replies: [{}],
-        content: '**komentar telah dihapus**',
-      },
-    ];
-
     const expectedThread = {
       thread: {
         id: useCasePayload.id,
@@ -71,7 +54,6 @@ describe('GetDetailThreadByIdUseCase', () => {
       body: 'Tarik napas lalu keluarkan',
       date: '2021-08-08T07:19:09.775Z',
       username: 'mueiya',
-      comments: expectedComment,
     });
 
     const mockDetailComment = new DetailComment([
