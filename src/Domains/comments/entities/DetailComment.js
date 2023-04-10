@@ -46,7 +46,6 @@ class DetailComment {
       date,
       deleted,
       thread,
-      replies,
       content,
     } = comment;
 
@@ -58,7 +57,6 @@ class DetailComment {
       username,
       date,
       thread,
-      replies,
       content: remappedContent,
     };
   }
@@ -70,7 +68,6 @@ class DetailComment {
       date,
       deleted,
       thread,
-      replies,
       content,
     } = comment;
 
@@ -84,7 +81,6 @@ class DetailComment {
       typeof date !== 'string' ||
       typeof deleted !== 'boolean' ||
       typeof thread !== 'string' ||
-      typeof replies !== 'object' ||
       typeof content !== 'string'
     ) {
       throw new Error('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');

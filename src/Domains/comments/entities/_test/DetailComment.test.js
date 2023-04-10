@@ -9,7 +9,6 @@ describe('a DetailComment entites', () => {
       date: '2021-08-08T07:19:09.775Z',
       deleted: false,
       thread: 'thread-134',
-      replies: [],
       content: 'Gue sih keluar dlu baru tarik',
     };
 
@@ -43,7 +42,6 @@ describe('a DetailComment entites', () => {
         date: [],
         deleted: 432,
         thread: 234,
-        replies: 233,
         content: 344,
       },
       {
@@ -52,7 +50,6 @@ describe('a DetailComment entites', () => {
         date: [],
         deleted: 325,
         thread: 234,
-        replies: 233,
         content: 344,
       },
     ];
@@ -69,7 +66,6 @@ describe('a DetailComment entites', () => {
         date: '2021-08-08T07:10:09.775Z',
         deleted: true,
         thread: 'thread-134',
-        replies: [{}],
         content: 'apalah itu',
       },
     ];
@@ -81,7 +77,6 @@ describe('a DetailComment entites', () => {
           username: 'Mueiya',
           date: '2021-08-08T07:10:09.775Z',
           thread: 'thread-134',
-          replies: [{}],
           content: '**komentar telah dihapus**',
         },
       ],
@@ -100,20 +95,6 @@ describe('a DetailComment entites', () => {
         date: '2021-08-08T07:19:09.775Z',
         deleted: false,
         thread: 'thread-134',
-        replies: [
-          {
-            'id': 'reply-BErOXUSefjwWGW1Z10Ihk',
-            'content': '**balasan telah dihapus**',
-            'date': '2021-08-08T07:59:48.766Z',
-            'username': 'johndoe',
-          },
-          {
-            'id': 'reply-xNBtm9HPR-492AeiimpfN',
-            'content': 'sebuah balasan',
-            'date': '2021-08-08T08:07:01.522Z',
-            'username': 'dicoding',
-          },
-        ],
         content: 'Gue sih keluar dlu baru tarik',
       },
       {
@@ -122,7 +103,6 @@ describe('a DetailComment entites', () => {
         date: '2021-08-08T07:10:09.775Z',
         deleted: true,
         thread: 'thread-134',
-        replies: [{}],
         content: 'apalah itu',
       },
     ]
@@ -137,7 +117,6 @@ describe('a DetailComment entites', () => {
       expect(comment.username).toEqual(payload[i].username);
       expect(comment.date).toEqual(payload[i].date);
       expect(comment.thread).toEqual(payload[i].thread);
-      expect(comment.replies).toEqual(payload[i].replies);
       expect(comment.content).toEqual(payload[i].deleted ? '**komentar telah dihapus**': payload[i].content);
     });
   });

@@ -95,7 +95,6 @@ describe('GetDetailThreadByIdUseCase', () => {
         username: 'notmueiya',
         date: '2021-08-08T07:20:09.775Z',
         thread: useCasePayload.id,
-        replies: expectedReply,
         content: 'Akhirnya aku bisa bernapas',
         deleted: false,
       },
