@@ -16,27 +16,12 @@ describe('GetDetailThreadByIdUseCase', () => {
     /**
      * create cascading expected object
      */
-    const expectedReply = [
-      {
-        id: 'reply-2341',
-        content: 'Senang dapat membantu',
-        date: '2021-08-08T0:29:09.775Z',
-        username: 'mueiya',
-      },
-      {
-        id: 'reply-3424',
-        content: '**balasan telah dihapus**',
-        date: '2021-08-08T07:50:09.775Z',
-        username: 'someoneElse',
-      },
-    ];
-
     const expectedComment = [
       {
         id: 'comment-1234',
         username: 'notmueiya',
         date: '2021-08-08T07:20:09.775Z',
-        replies: expectedReply,
+        replies: [{}],
         content: 'Akhirnya aku bisa bernapas',
       },
       {

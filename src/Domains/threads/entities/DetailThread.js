@@ -8,7 +8,6 @@ class DetailThread {
       body,
       date,
       username,
-      comments,
     } = payload;
 
     this.id = id;
@@ -16,7 +15,6 @@ class DetailThread {
     this.body = body;
     this.date = date;
     this.username = username;
-    this.comments = comments;
   }
 
   _verifyPayload({
@@ -25,9 +23,8 @@ class DetailThread {
     body,
     date,
     username,
-    comments,
   }) {
-    if (!id || !title || !body || !date || !username || !comments) {
+    if (!id || !title || !body || !date || !username) {
       throw new Error('DETAIL_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
@@ -36,8 +33,7 @@ class DetailThread {
         typeof title !== 'string' ||
         typeof body !== 'string' ||
         typeof date !== 'string' ||
-        typeof username !== 'string' ||
-        typeof comments !== 'object'
+        typeof username !== 'string'
     ) {
       throw new Error('DETAIL_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }

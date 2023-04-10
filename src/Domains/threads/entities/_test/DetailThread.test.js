@@ -7,7 +7,6 @@ describe('a DetailThread entities', () => {
       id: 'thread-1234',
       title: 'Cara Bernapas',
       username: 'Mueiya',
-      comments: {},
     };
 
     // Action and Assert
@@ -22,7 +21,6 @@ describe('a DetailThread entities', () => {
       body: 532,
       date: {},
       username: 34545,
-      comments: 'Oh begini cara Bernapas',
     };
 
     // Action and Assert
@@ -37,7 +35,6 @@ describe('a DetailThread entities', () => {
       body: 'Tarik napas lalu keluarkan',
       date: '2021-08-08T07:19:09.775Z',
       username: 'user-1233',
-      comments: {},
     };
 
     // Action
@@ -49,6 +46,5 @@ describe('a DetailThread entities', () => {
     expect(detailThread.body).toEqual(payload.body);
     expect(detailThread.date).toEqual(payload.date);
     expect(detailThread.username).toEqual(payload.username);
-    expect(detailThread.comments).toEqual(payload.comments);
   });
 });
