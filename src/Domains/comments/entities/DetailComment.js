@@ -1,33 +1,3 @@
-// class DetailComment {
-//   constructor(payload) {
-//     this._verifyPayload(payload);
-//     this.payload = payload;
-//     this.comments = payload.map((comment) => this._createComment(comment));
-//   }
-
-//   _verifyPayload(payload) {
-//     if (!payload) {
-//       throw new Error('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
-//     }
-
-//     if (!Array.isArray(payload)) {
-//       throw new Error('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
-//     }
-//   }
-
-//   _createComment(comments) {
-//     return {
-//       id: comments.id,
-//       username: comments.username,
-//       date: comments.date,
-//       thread: comments.thread,
-//       content: comments.is_deleted ? '**komentar telah dihapus**' : comments.content,
-//     };
-//   }
-// }
-
-// module.exports = DetailComment;
-
 class DetailComment {
   constructor(payload) {
     if (!Array.isArray(payload)) {
