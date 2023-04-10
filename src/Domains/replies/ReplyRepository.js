@@ -5,7 +5,7 @@ class ReplyRepository {
   async getReplyById(replyId) {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
-  async getDetailReplyById(replyId) {
+  async getReplyByCommentId(commentId) {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }
