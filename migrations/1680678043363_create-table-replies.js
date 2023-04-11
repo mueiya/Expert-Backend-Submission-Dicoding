@@ -17,6 +17,10 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
+    thread: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+    },
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
@@ -32,6 +36,8 @@ exports.up = (pgm) => {
   pgm.addConstraint('replies', 'fk_replies_comments', 'FOREIGN KEY(comment) REFERENCES comments(id) ON DELETE CASCADE');
   // Adding foreign key users(id) as owner
   pgm.addConstraint('replies', 'fk_replies_users', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
+  // Adding foreign key threads(id) as thread
+  pgm.addConstraint('replies', 'fk_replies_threada', 'FOREIGN KEY(thread) REFERENCES threads(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {
