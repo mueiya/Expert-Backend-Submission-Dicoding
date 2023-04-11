@@ -16,17 +16,19 @@ describe('a PostThread entities', () => {
     const payload = {
       title: 2123,
       body: {},
+      owner: 234,
     };
 
     // Action and Assert
     expect(() => new PostThread(payload)).toThrowError('POST_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should create postUser object correctly', () => {
+  it('should create postThread object correctly', () => {
     // Arrange
     const payload = {
       title: 'Cara Bernapas',
       body: 'Tarik napas lalu keluarkan',
+      owner: 'user-1234',
     };
 
     // Action
@@ -35,5 +37,6 @@ describe('a PostThread entities', () => {
     // Assert
     expect(postThread.title).toEqual(payload.title);
     expect(postThread.body).toEqual(payload.body);
+    expect(postThread.owner).toEqual(payload.owner);
   });
 });

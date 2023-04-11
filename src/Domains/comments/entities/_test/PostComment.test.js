@@ -15,6 +15,8 @@ describe('a PostComment entities', () => {
     // Arrange
     const payload = {
       content: 34251,
+      threadId: [],
+      owner: 21234,
     };
 
     // Action and Assert
@@ -25,6 +27,8 @@ describe('a PostComment entities', () => {
     // Arrange
     const payload = {
       content: 'Akhirnya ku bisa bernapas',
+      threadId: 'thread-1234',
+      owner: 'owner-1234',
     };
 
     // Action
@@ -32,5 +36,7 @@ describe('a PostComment entities', () => {
 
     // Assert
     expect(postComment.content).toEqual(payload.content);
+    expect(postComment.threadId).toEqual(payload.threadId);
+    expect(postComment.owner).toEqual(payload.owner);
   });
 });
