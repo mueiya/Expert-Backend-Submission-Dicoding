@@ -5,27 +5,26 @@ const AddThreadUseCase = require('../AddThreadUseCase');
 
 describe('AddThreadUseCase', () => {
   /**
-       * to test wheter the use case can consentrate step by step correctly
-       */
+  * to test wheter the use case can consentrate step by step correctly
+  */
   it('should orchestrating the add thread action correctly', async () => {
     // Arrange
     const useCasePayload = {
       title: 'Cara Bernapas',
       body: 'Tarik napas lalu keluarkan',
+      owner: 'user-1234',
     };
 
     const mockPostedThread = new PostedThread({
       id: 'thread-1234',
       title: useCasePayload.title,
-      owner: 'user-1234',
+      owner: useCasePayload.owner,
     });
 
     // Creating dependency of use case
     const mockThreadRepository = new ThreadRepository();
 
     // Mocking needed function
-    mockThreadRepository.getThreadById = jest.fn()
-        .mockImplementation(() => Promise.resolve());
     mockThreadRepository.addThread = jest.fn()
         .mockImplementation(() => Promise.resolve(mockPostedThread));
 
@@ -40,13 +39,13 @@ describe('AddThreadUseCase', () => {
     expect(postedThread).toStrictEqual(new PostedThread({
       id: 'thread-1234',
       title: useCasePayload.title,
-      owner: 'user-1234',
+      owner: useCasePayload.owner,
     }));
 
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload.id);
     expect(mockThreadRepository.addThread).toBeCalledWith(new PostThread({
       title: useCasePayload.title,
       body: useCasePayload.body,
+      owner: useCasePayload.owner,
     }));
   },
   );

@@ -11,7 +11,7 @@ class ViewDetailThreadByIdUseCase {
 
     const commentPromises = comments.comments.map(async (comment) => {
       const replies = await this._replyRepository.getReplyByCommentId(comment.id);
-      const formattedReplies = replies.replies.map((reply) => ({
+      const remappedReplies = replies.replies.map((reply) => ({
         id: reply.id,
         content: reply.content,
         date: reply.date,
@@ -22,23 +22,23 @@ class ViewDetailThreadByIdUseCase {
         id: comment.id,
         username: comment.username,
         date: comment.date,
-        replies: formattedReplies,
+        replies: remappedReplies,
         content: comment.content,
       };
     });
 
-    const formattedComments = await Promise.all(commentPromises);
+    const remappedComments = await Promise.all(commentPromises);
 
-    const formattedThread = {
+    const remappedThread = {
       id: thread.id,
       title: thread.title,
       body: thread.body,
       date: thread.date,
       username: thread.username,
-      comments: formattedComments,
+      comments: remappedComments,
     };
 
-    return {thread: formattedThread};
+    return {thread: remappedThread};
   }
 }
 
