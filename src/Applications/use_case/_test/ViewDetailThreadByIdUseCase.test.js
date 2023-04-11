@@ -44,6 +44,20 @@ describe('GetDetailThreadByIdUseCase', () => {
             ],
             content: 'Akhirnya aku bisa bernapas',
           },
+          {
+            id: 'comment-2345',
+            username: 'stranger',
+            date: '2021-08-08T07:50:09.775Z',
+            replies: [
+              {
+                id: 'reply-432',
+                content: 'Wooosh',
+                date: '2021-08-08T07:50:09.775Z',
+                username: 'mueiya',
+              },
+            ],
+            content: '**komentar telah dihapus**',
+          },
         ],
       },
     };
@@ -65,9 +79,17 @@ describe('GetDetailThreadByIdUseCase', () => {
         content: 'Akhirnya aku bisa bernapas',
         deleted: false,
       },
+      {
+        id: 'comment-2345',
+        username: 'stranger',
+        date: '2021-08-08T07:50:09.775Z',
+        thread: useCasePayload.id,
+        content: 'ngapain dah tutor ginian',
+        deleted: true,
+      },
     ]);
 
-    const mockDetailReply = new DetailReply([
+    const mockDetailReply1 = new DetailReply([
       {
         id: 'reply-2341',
         content: 'Senang dapat membantu',
@@ -86,6 +108,17 @@ describe('GetDetailThreadByIdUseCase', () => {
       },
     ]);
 
+    const mockDetailReply2 = new DetailReply([
+      {
+        id: 'reply-432',
+        content: 'Wooosh',
+        date: '2021-08-08T07:50:09.775Z',
+        comment: 'comment-2345',
+        deleted: false,
+        username: 'mueiya',
+      },
+    ]);
+
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
@@ -95,7 +128,13 @@ describe('GetDetailThreadByIdUseCase', () => {
     mockReplyRepository.getReplyById = jest.fn()
         .mockImplementation(() => Promise.resolve());
     mockReplyRepository.getReplyByCommentId = jest.fn()
-        .mockImplementation(() => Promise.resolve(mockDetailReply));
+        .mockImplementation((commentId) => {
+          if (commentId === 'comment-1234') {
+            return Promise.resolve(mockDetailReply1);
+          } else if (commentId === 'comment-2345') {
+            return Promise.resolve(mockDetailReply2);
+          }
+        });
     mockCommentRepository.getCommentById = jest.fn()
         .mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentByThreadId = jest.fn()

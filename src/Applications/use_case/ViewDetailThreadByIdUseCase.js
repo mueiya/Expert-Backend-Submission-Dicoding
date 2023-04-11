@@ -7,11 +7,12 @@ class ViewDetailThreadByIdUseCase {
 
   async execute(useCasePayload) {
     const thread = await this._threadRepository.getThreadById(useCasePayload.id);
-    const comments = await this._commentRepository.getCommentByThreadId(useCasePayload.id);
+    const getComments = await this._commentRepository.getCommentByThreadId(useCasePayload.id);
 
-    const commentPromises = comments.comments.map(async (comment) => {
-      const replies = await this._replyRepository.getReplyByCommentId(comment.id);
-      const remappedReplies = replies.replies.map((reply) => ({
+    // Get each comment's replies and remmap the replies
+    const commentPromises = getComments.comments.map(async (comment) => {
+      const getReplies = await this._replyRepository.getReplyByCommentId(comment.id);
+      const remappedReplies = getReplies.replies.map((reply) => ({
         id: reply.id,
         content: reply.content,
         date: reply.date,
