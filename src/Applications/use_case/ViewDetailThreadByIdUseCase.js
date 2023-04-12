@@ -6,7 +6,7 @@ class ViewDetailThreadByIdUseCase {
   }
 
   async execute(useCasePayload) {
-    const thread = await this._threadRepository.getThreadById(useCasePayload.id);
+    const thread = await this._threadRepository.getDetailThreadById(useCasePayload.id);
     const getComments = await this._commentRepository.getCommentByThreadId(useCasePayload.id);
 
     // Get each comment's replies and remmap the replies
