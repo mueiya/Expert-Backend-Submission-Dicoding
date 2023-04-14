@@ -62,7 +62,7 @@ const ServerTestHelper = {
     };
 
     const comment = await server.inject({
-      menthod: 'POST',
+      method: 'POST',
       url: `/threads/${threadId}/comments`,
       payload: {
         content: commentDummy.content,
@@ -87,6 +87,10 @@ const ServerTestHelper = {
 
   async cleanCommentsTable() {
     await pool.query('DELETE FROM threads WHERE 1=1');
+  },
+
+  async cleanRepliesTable() {
+    await pool.query('DELETE FROM replies WHERE 1=1');
   },
 };
 
