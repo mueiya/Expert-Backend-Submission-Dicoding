@@ -209,7 +209,58 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
+      expect(responseJson.message).toEqual('reply posted');
       expect(responseJson.data.addedReply).toBeDefined();
+    });
+  });
+  describe('When DELETE /replies', () => {
+    it('should response 404 when comment with threadId or commentId or replyId not found', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      const authentication = await ServerTestHelper.addAuthDummy(server);
+      const threadId = await ServerTestHelper.addThreadDummy(server, authentication);
+      const commentId = await ServerTestHelper.addCommentDummy(server, threadId, authentication);
+      await ServerTestHelper.addReplyDummy(server, commentId, threadId, authentication);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/xxxxx/comments/xxxxx/replies/xxxxx`,
+        headers: {
+          Authorization: `Bearer ${authentication.data.accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual(`reply with xxxxx and xxxxx and xxxxx not found`);
+    });
+    it('should response 200', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      const authentication = await ServerTestHelper.addAuthDummy(server);
+      const threadId = await ServerTestHelper.addThreadDummy(server, authentication);
+      const commentId = await ServerTestHelper.addCommentDummy(server, threadId, authentication);
+      const replyId = await ServerTestHelper.addReplyDummy(server, commentId, threadId, authentication);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${commentId}/replies/${replyId}`,
+        headers: {
+          Authorization: `Bearer ${authentication.data.accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.message).toEqual('reply deleted');
     });
   });
 });

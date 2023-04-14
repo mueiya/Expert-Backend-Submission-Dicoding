@@ -52,7 +52,7 @@ describe('/threads endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: `/threads/xxxxxx/comments`,
+        url: `/threads/xxxxx/comments`,
         payload: requestPayload,
         headers: {
           Authorization: `Bearer ${authentication.data.accessToken}`,
@@ -63,7 +63,7 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
+      expect(responseJson.message).toEqual('thread with id: xxxxx not found');
     });
     describe('Bad Payload', () => {
       it('should response 400 and throw error when given missing payload', async () => {
@@ -143,7 +143,56 @@ describe('/threads endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
+      expect(responseJson.message).toEqual('comment posted');
       expect(responseJson.data.addedComment).toBeDefined();
+    });
+  });
+  describe('When DELETE /comments', () => {
+    it('should response 404 when comment with threadId or commentId not found', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      const authentication = await ServerTestHelper.addAuthDummy(server);
+      const threadId = await ServerTestHelper.addThreadDummy(server, authentication);
+      await ServerTestHelper.addCommentDummy(server, threadId, authentication);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/xxxxx/comments/xxxxx`,
+        headers: {
+          Authorization: `Bearer ${authentication.data.accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual(`comment with xxxxx and xxxxx not found`);
+    });
+    it('should response 200', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      const authentication = await ServerTestHelper.addAuthDummy(server);
+      const threadId = await ServerTestHelper.addThreadDummy(server, authentication);
+      const commentId = await ServerTestHelper.addCommentDummy(server, threadId, authentication);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${authentication.data.accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.message).toEqual('comment deleted');
     });
   });
 });
