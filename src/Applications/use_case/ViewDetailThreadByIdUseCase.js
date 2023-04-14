@@ -11,6 +11,7 @@ class ViewDetailThreadByIdUseCase {
 
     // Get each comment's replies and remmap the replies
     const commentPromises = getComments.comments.map(async (comment) => {
+      await this._commentRepository.getCommentById(comment.id);
       const getReplies = await this._replyRepository.getReplyByCommentId(comment.id);
       const remappedReplies = getReplies.replies.map((reply) => ({
         id: reply.id,
