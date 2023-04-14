@@ -77,6 +77,27 @@ const ServerTestHelper = {
     return commentResponse.data.addedComment.id;
   },
 
+  async addReplyDummy(server, commentId, threadId, auth) {
+    const replyDummy = {
+      content: 'contentDummy',
+    };
+
+    const reply = await server.inject({
+      method: 'POST',
+      url: `/threads/${threadId}/comments/${commentId}/replies`,
+      payload: {
+        content: replyDummy.content,
+      },
+      headers: {
+        Authorization: `Bearer ${auth.data.accessToken}`,
+      },
+    });
+
+    const replyResponse = JSON.parse(reply.payload);
+
+    return replyResponse.data.addedReply.id;
+  },
+
   async cleanUsersTable() {
     await pool.query('DELETE FROM users WHERE 1=1');
   },
