@@ -152,18 +152,6 @@ describe('CommentRepository Postgres', () => {
     });
   });
   describe('getCommentByThreadId', () => {
-    it('should throw error when thread is not found', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({
-        id: 'thread-123',
-      });
-      await CommentsTableTestHelper.addComment({});
-
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-      // Action and Assert
-      await expect(commentRepositoryPostgres.getCommentByThreadId('falseThreadId')).rejects.toThrowError(NotFoundError);
-    });
     it('should return DetailComment correctly', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
@@ -177,6 +165,46 @@ describe('CommentRepository Postgres', () => {
       const getCommentByThreadId = commentRepositoryPostgres.getCommentByThreadId('thread-123');
       // Assert
       await expect(getCommentByThreadId).resolves.toStrictEqual(new DetailComment([
+        {
+          id: 'comment-123',
+          username: 'dicoding',
+          date: '2023-04-11T08:12:00.000Z',
+          deleted: false,
+          thread: 'thread-123',
+          content: 'The content of the comment',
+        },
+      ]));
+    });
+    it('should return Detailcomment in ascending order', async () => {
+      // Arrange
+      const secondComment = {
+        id: 'comment-1234',
+        content: 'harusnya sih tampil pertama walau di add kedua',
+        date: '2023-04-11T06:05:00.000Z',
+        thread: 'thread-123',
+        owner: 'user-123',
+        deleted: false,
+      };
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-123',
+      });
+      await CommentsTableTestHelper.addComment({});
+      await CommentsTableTestHelper.addComment(secondComment);
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+      // Action
+      const getCommentByThreadId = commentRepositoryPostgres.getCommentByThreadId('thread-123');
+      // Assert
+      await expect(getCommentByThreadId).resolves.toStrictEqual(new DetailComment([
+        {
+          id: 'comment-1234',
+          username: 'dicoding',
+          date: '2023-04-11T06:05:00.000Z',
+          deleted: false,
+          thread: 'thread-123',
+          content: 'harusnya sih tampil pertama walau di add kedua',
+        },
         {
           id: 'comment-123',
           username: 'dicoding',

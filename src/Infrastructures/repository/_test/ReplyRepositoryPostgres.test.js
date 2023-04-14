@@ -177,20 +177,6 @@ describe('ReplyRepository postgres', () => {
       await expect(replyRepositoryPostgres.verifyReplyOwner('reply-123', 'user-123')).resolves.toEqual('reply-123');
     });
     describe('getReplyByCommentId', () => {
-      it('should throw error when comment id not found', async () => {
-        // Arrange
-        await UsersTableTestHelper.addUser({});
-        await ThreadsTableTestHelper.addThread({});
-        await CommentsTableTestHelper.addComment({
-          id: 'comment-123',
-        });
-        await RepliesTableTestHelper.addReply({});
-
-        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-        // Action and Assert
-        await expect(replyRepositoryPostgres.getReplyByCommentId('falseCommentId')).rejects.toThrowError(NotFoundError);
-      });
       it('should return DetailReply correctly', async () => {
         // Arrange
         await UsersTableTestHelper.addUser({
@@ -207,6 +193,50 @@ describe('ReplyRepository postgres', () => {
         // Action and Assert
         const detailReply = replyRepositoryPostgres.getReplyByCommentId('comment-123');
         await expect(detailReply).resolves.toStrictEqual(new DetailReply([
+          {
+            id: 'reply-123',
+            content: 'The content of the reply',
+            date: '2023-04-11T08:12:00.000Z',
+            comment: 'comment-123',
+            username: 'dicoding',
+            deleted: false,
+          },
+        ]));
+      });
+      it('should return DetailReply in ascending order', async () => {
+        // Arrange
+        const secondReply = {
+          id: 'reply-1234',
+          content: 'Harusnya sih tampil pertama walau add di akhir',
+          date: '2023-04-11T05:10:00.000Z',
+          comment: 'comment-123',
+          thread: 'thread-123',
+          owner: 'user-123',
+          deleted: false,
+        };
+        await UsersTableTestHelper.addUser({
+          username: 'dicoding',
+        });
+        await ThreadsTableTestHelper.addThread({});
+        await CommentsTableTestHelper.addComment({
+          id: 'comment-123',
+        });
+        await RepliesTableTestHelper.addReply({});
+        await RepliesTableTestHelper.addReply(secondReply);
+
+        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+        // Action and Assert
+        const detailReply = replyRepositoryPostgres.getReplyByCommentId('comment-123');
+        await expect(detailReply).resolves.toStrictEqual(new DetailReply([
+          {
+            id: 'reply-1234',
+            content: 'Harusnya sih tampil pertama walau add di akhir',
+            date: '2023-04-11T05:10:00.000Z',
+            comment: 'comment-123',
+            username: 'dicoding',
+            deleted: false,
+          },
           {
             id: 'reply-123',
             content: 'The content of the reply',

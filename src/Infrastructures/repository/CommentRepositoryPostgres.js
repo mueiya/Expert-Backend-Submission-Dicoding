@@ -75,17 +75,6 @@ class CommentRepositoryPostgres extends CommentRepository {
   }
 
   async getCommentByThreadId(threadId) {
-    const queryThread = {
-      text: 'SELECT * FROM threads WHERE id = $1',
-      values: [threadId],
-    };
-
-    const checkThread = await this._pool.query(queryThread);
-    if (!checkThread.rowCount) {
-      throw new NotFoundError(`thread with id: ${threadId} not found`);
-    }
-    const thread = checkThread.rows[0].id;
-
     const query = {
       text: `
         SELECT 
@@ -98,8 +87,9 @@ class CommentRepositoryPostgres extends CommentRepository {
         FROM comments
         INNER JOIN users ON comments.owner = users.id
         WHERE thread = $1
+        ORDER BY comments.date ASC
         `,
-      values: [thread],
+      values: [threadId],
     };
 
     const result = await this._pool.query(query);

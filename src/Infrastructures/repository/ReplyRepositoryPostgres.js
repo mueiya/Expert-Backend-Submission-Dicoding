@@ -56,7 +56,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError(`reply with ${id} and ${commentId} and ${threadId}`);
+      throw new NotFoundError(`reply with ${id} and ${commentId} and ${threadId} not found`);
     }
     return result.rows[0].id;
   }
@@ -78,20 +78,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
   }
 
   async getReplyByCommentId(commentId) {
-    const queryComment = {
-      text: `
-            SELECT *
-            FROM comments
-            WHERE id = $1`,
-      values: [commentId],
-    };
-
-    const checkComment = await this._pool.query(queryComment);
-    if (!checkComment.rowCount) {
-      throw new NotFoundError(`comment with id: ${commentId} not found`);
-    }
-    const comment = checkComment.rows[0].id;
-
     const query = {
       text: `
         SELECT
@@ -104,8 +90,9 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         FROM replies
         INNER JOIN users ON replies.owner = users.id
         WHERE comment = $1
+        ORDER BY replies.date ASC
         `,
-      values: [comment],
+      values: [commentId],
     };
 
     const result = await this._pool.query(query);
