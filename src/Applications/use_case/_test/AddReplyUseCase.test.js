@@ -30,9 +30,7 @@ describe('AddReplyUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** Mocking needed function */
-    mockThreadRepository.getThreadById = jest.fn()
-        .mockImplementation(() => Promise.resolve());
-    mockCommentRepository.getCommentById = jest.fn()
+    mockCommentRepository.verifyCommentAvailability = jest.fn()
         .mockImplementation(() => Promise.resolve());
     mockReplyRepository.addReply = jest.fn()
         .mockImplementation(() => Promise.resolve(mockPostedReply));
@@ -54,8 +52,7 @@ describe('AddReplyUseCase', () => {
       owner: useCasePayload.owner,
     }));
 
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(useCasePayload.threadId);
-    expect(mockCommentRepository.getCommentById).toBeCalledWith(useCasePayload.commentId);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload.commentId, useCasePayload.threadId);
     expect(mockReplyRepository.addReply).toBeCalledWith(new PostReply({
       content: useCasePayload.content,
       threadId: useCasePayload.threadId,
