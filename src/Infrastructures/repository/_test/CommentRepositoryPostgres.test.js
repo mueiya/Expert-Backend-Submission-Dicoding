@@ -65,39 +65,7 @@ describe('CommentRepository Postgres', () => {
     });
   });
 
-  describe('getCommentById functionn', ( ) => {
-    it('should resolve and return comment id correctly and throw error when not found', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({});
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-      });
-
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-
-      // Action and Assert
-      await expect(commentRepositoryPostgres.getCommentById('commene-1234')).rejects.toThrowError(NotFoundError);
-      await expect(commentRepositoryPostgres.getCommentById('comment-123')).resolves.toEqual('comment-123');
-    });
-  });
-
   describe('verifyCommentAvailability function', () => {
-    it('should returnig comment id', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({
-        id: 'thread-123',
-      });
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-      });
-
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-
-      // Action and Assert
-      await expect(commentRepositoryPostgres.verifyCommentAvailability('comment-123', 'thread-123')).resolves.toEqual('comment-123');
-    });
     it('should throw NotFoundError when comment is not found', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
@@ -132,23 +100,6 @@ describe('CommentRepository Postgres', () => {
 
       // Action and Assert
       await expect(commentRepositoryPostgres.verifyCommentOwner('comment-123', 'falseUsersId')).rejects.toThrowError(AuthorizationError);
-    });
-    it('should retun comment id when user is verified', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-      });
-      await ThreadsTableTestHelper.addThread({
-        id: 'thread-123',
-      });
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        owner: 'user-123',
-      });
-      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
-
-      // Action and Assert
-      await expect(commentRepositoryPostgres.verifyCommentOwner('comment-123', 'user-123')).resolves.toEqual('comment-123');
     });
   });
   describe('getCommentByThreadId', () => {

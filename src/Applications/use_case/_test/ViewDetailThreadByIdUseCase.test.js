@@ -125,28 +125,15 @@ describe('GetDetailThreadByIdUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mock needed function */
-    mockReplyRepository.getReplyByCommentId = jest.fn()
-        .mockImplementation((commentId) => {
-          if (commentId === 'comment-1234') {
-            return Promise.resolve(mockDetailReply1);
-          } else if (commentId === 'comment-2345') {
-            return Promise.resolve(mockDetailReply2);
-          }
-        });
-    mockCommentRepository.getCommentById = jest.fn()
-        .mockImplementation((commentId) => {
-          if (commentId === 'comment-1234') {
-            return Promise.resolve('comment-1234');
-          } else if (commentId === 'comment-2345') {
-            return Promise.resolve('comment-2345');
-          }
-        });
-    mockCommentRepository.getCommentByThreadId = jest.fn()
-        .mockImplementation(() => Promise.resolve(mockDetailComment));
-    mockThreadRepository.getThreadById = jest.fn()
-        .mockImplementation(() => Promise.resolve(useCasePayload.id));
-    mockThreadRepository.getDetailThreadById = jest.fn()
-        .mockImplementation(() => Promise.resolve(mockDetailThread));
+    mockReplyRepository.getReplyByCommentId = jest.fn((commentId) => {
+      if (commentId === 'comment-1234') {
+        return Promise.resolve(mockDetailReply1);
+      } else if (commentId === 'comment-2345') {
+        return Promise.resolve(mockDetailReply2);
+      }
+    });
+    mockCommentRepository.getCommentByThreadId = jest.fn(() => Promise.resolve(mockDetailComment));
+    mockThreadRepository.getDetailThreadById = jest.fn(() => Promise.resolve(mockDetailThread));
 
     /** creating use case instance */
     const getViewDetailThreadByIdUseCase = new ViewDetailThreadByIdUseCase({
@@ -162,7 +149,6 @@ describe('GetDetailThreadByIdUseCase', () => {
     expect(detailThread).toStrictEqual(expectedThread);
     expect(mockThreadRepository.getDetailThreadById).toBeCalledWith(useCasePayload.id);
     expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(useCasePayload.id);
-    expect(mockCommentRepository.getCommentById).toBeCalledWith(mockDetailComment.comments[0].id);
     expect(mockReplyRepository.getReplyByCommentId).toBeCalledWith(mockDetailComment.comments[0].id);
   });
 });

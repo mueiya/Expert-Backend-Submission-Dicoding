@@ -26,20 +26,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const result = await this._pool.query(query);
 
-    return new PostedComment({...result.rows[0]});
-  }
-
-  async getCommentById(id) {
-    const query = {
-      text: 'SELECT * FROM comments WHERE id =$1',
-      values: [id],
-    };
-
-    const result = await this._pool.query(query);
-    if (!result.rowCount) {
-      throw new NotFoundError(`comment with id: ${id} not found`);
-    }
-    return result.rows[0].id;
+    return new PostedComment(result.rows[0]);
   }
 
   async verifyCommentAvailability(id, threadId) {
@@ -55,7 +42,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rowCount) {
       throw new NotFoundError(`comment with ${id} and ${threadId} not found`);
     }
-    return result.rows[0].id;
   }
 
   async verifyCommentOwner(id, owner) {
@@ -71,7 +57,6 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rowCount) {
       throw new AuthorizationError(`only author can do this action`);
     }
-    return result.rows[0].id;
   }
 
   async getCommentByThreadId(threadId) {
