@@ -83,42 +83,7 @@ describe('ReplyRepository postgres', () => {
     });
   });
 
-  describe('getReplyById function', () => {
-    it('should resolve and return reply id corrextly and throw error when not found', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({});
-      await CommentsTableTestHelper.addComment({});
-      await RepliesTableTestHelper.addReply({
-        id: 'reply-123',
-      });
-
-      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-      // Action and Assert
-      await expect(replyRepositoryPostgres.getReplyById('reply-1232')).rejects.toThrowError(NotFoundError);
-      await expect(replyRepositoryPostgres.getReplyById('reply-123')).resolves.toEqual('reply-123');
-    });
-  });
   describe('verifyReplyAvailability function', () => {
-    it('should returning reply id', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({
-        id: 'thread-123',
-      });
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-      });
-      await RepliesTableTestHelper.addReply({
-        id: 'reply-123',
-      });
-
-      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-      // Action and Assert
-      await expect(replyRepositoryPostgres.verifyReplyAvailability('reply-123', 'comment-123', 'thread-123')).resolves.toEqual('reply-123');
-    });
     it('should throw NotFoundErro when reply is not found', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
@@ -158,23 +123,6 @@ describe('ReplyRepository postgres', () => {
 
       // Action and Assert
       await expect(replyRepositoryPostgres.verifyReplyOwner('reply-123', 'falseUserId')).rejects.toThrowError(AuthorizationError);
-    });
-    it('should return reply id when user is verified', async () => {
-      // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-      });
-      await ThreadsTableTestHelper.addThread({});
-      await CommentsTableTestHelper.addComment({});
-      await RepliesTableTestHelper.addReply({
-        id: 'reply-123',
-        owner: 'user-123',
-      });
-
-      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-      // Action and Assert
-      await expect(replyRepositoryPostgres.verifyReplyOwner('reply-123', 'user-123')).resolves.toEqual('reply-123');
     });
     describe('getReplyByCommentId', () => {
       it('should return DetailReply correctly', async () => {

@@ -26,23 +26,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const result = await this._pool.query(query);
 
-    return new PostedReply({...result.rows[0]});
-  }
-
-  async getReplyById(id) {
-    const query = {
-      text: `
-        SELECT *
-        FROM replies
-        WHERE id = $1`,
-      values: [id],
-    };
-
-    const result = await this._pool.query(query);
-    if (!result.rowCount) {
-      throw new NotFoundError(`reply with id: ${id} not found`);
-    }
-    return result.rows[0].id;
+    return new PostedReply(result.rows[0]);
   }
 
   async verifyReplyAvailability(id, commentId, threadId) {
@@ -58,7 +42,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!result.rowCount) {
       throw new NotFoundError(`reply with ${id} and ${commentId} and ${threadId} not found`);
     }
-    return result.rows[0].id;
   }
 
   async verifyReplyOwner(id, owner) {
@@ -74,7 +57,6 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     if (!result.rowCount) {
       throw new AuthorizationError(`only author can do this action`);
     }
-    return result.rows[0].id;
   }
 
   async getReplyByCommentId(commentId) {

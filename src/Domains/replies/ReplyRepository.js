@@ -3,10 +3,6 @@ class ReplyRepository {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 
-  async getReplyById(id) {
-    throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-  }
-
   async getReplyByCommentId(commentId) {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
