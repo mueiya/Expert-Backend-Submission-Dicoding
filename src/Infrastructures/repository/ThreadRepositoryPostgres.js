@@ -25,10 +25,10 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
     const result = await this._pool.query(query);
 
-    return new PostedThread({...result.rows[0]});
+    return new PostedThread(result.rows[0]);
   }
 
-  async getThreadById(id) {
+  async verifyThreadAvailability(id) {
     const query = {
       text: 'SELECT * FROM threads WHERE id = $1',
       values: [id],
@@ -38,12 +38,9 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     if (!result.rowCount) {
       throw new NotFoundError(`thread with id: ${id} not found`);
     }
-    return result.rows[0].id;
   }
 
   async getDetailThreadById(id) {
-    await this.getThreadById(id);
-
     const query = {
       text: `
       SELECT threads.id, threads.title, threads.body, threads.date, users.username
@@ -54,7 +51,11 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     };
 
     const result = await this._pool.query(query);
-    return new DetailThread({...result.rows[0]});
+
+    if (!result.rowCount) {
+      throw new NotFoundError(`thread with id: ${id} not found`);
+    }
+    return new DetailThread(result.rows[0]);
   }
 }
 
