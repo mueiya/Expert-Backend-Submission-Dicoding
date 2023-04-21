@@ -31,7 +31,7 @@ describe('AddReplyUseCase', () => {
 
     /** Mocking needed function */
     mockCommentRepository.verifyCommentAvailability = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.commentId));
     mockReplyRepository.addReply = jest.fn()
         .mockImplementation(() => Promise.resolve(mockPostedReply));
 

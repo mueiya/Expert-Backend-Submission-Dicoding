@@ -28,7 +28,7 @@ describe('AddCommentUseCase', () => {
 
     // mocking needed fuction
     mockThreadRepository.getThreadById = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.threadId));
     mockCommentRepository.addComment = jest.fn()
         .mockImplementation(() => Promise.resolve(mockPostedComment));
 

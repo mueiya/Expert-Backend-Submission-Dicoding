@@ -15,9 +15,9 @@ describe('DeleteCommentUseCase', () => {
 
     /** Mocking needed function */
     mockCommentRepository.verifyCommentAvailability = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.id));
     mockCommentRepository.verifyCommentOwner = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.id));
     mockCommentRepository.deleteCommentById = jest.fn()
         .mockImplementation(() => Promise.resolve());
 

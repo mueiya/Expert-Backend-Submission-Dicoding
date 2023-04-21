@@ -16,9 +16,9 @@ describe('DeleteReplyUseCase', () => {
 
     /** Mocking needed function */
     mockReplyRepository.verifyReplyAvailability = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.id));
     mockReplyRepository.verifyReplyOwner = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.id));
     mockReplyRepository.deleteReplyById = jest.fn()
         .mockImplementation(() => Promise.resolve());
 

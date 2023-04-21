@@ -125,8 +125,6 @@ describe('GetDetailThreadByIdUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     /** mock needed function */
-    mockReplyRepository.getReplyById = jest.fn()
-        .mockImplementation(() => Promise.resolve());
     mockReplyRepository.getReplyByCommentId = jest.fn()
         .mockImplementation((commentId) => {
           if (commentId === 'comment-1234') {
@@ -136,11 +134,17 @@ describe('GetDetailThreadByIdUseCase', () => {
           }
         });
     mockCommentRepository.getCommentById = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation((commentId) => {
+          if (commentId === 'comment-1234') {
+            return Promise.resolve('comment-1234');
+          } else if (commentId === 'comment-2345') {
+            return Promise.resolve('comment-2345');
+          }
+        });
     mockCommentRepository.getCommentByThreadId = jest.fn()
         .mockImplementation(() => Promise.resolve(mockDetailComment));
     mockThreadRepository.getThreadById = jest.fn()
-        .mockImplementation(() => Promise.resolve());
+        .mockImplementation(() => Promise.resolve(useCasePayload.id));
     mockThreadRepository.getDetailThreadById = jest.fn()
         .mockImplementation(() => Promise.resolve(mockDetailThread));
 
