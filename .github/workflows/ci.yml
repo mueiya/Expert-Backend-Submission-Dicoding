@@ -12,7 +12,7 @@
         strategy:
           matrix:
             node-version: [16.x]
-            
+
         steps:
         - uses: actions/checkout@v2
         - name: Use Node.js ${{ matrix.node-version }}
@@ -38,3 +38,4 @@
             PGPORT: ${{ secrets.PGPORT_TEST }}
             ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
             REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
+            ACCESS_TOKEN_AGE: ${{ secrets.ACCESS_TOKEN_AGE }}
