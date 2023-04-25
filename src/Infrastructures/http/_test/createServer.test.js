@@ -51,7 +51,7 @@ describe('HTTP server', () => {
 
       // Assert
       expect(response.statusCode).toBe(200);
-      expect(response.result).toEqual({value: 'Hallo Dunia!'});
+      expect(response.result).toEqual({value: 'Helo Efferiwan!'});
     });
   });
 });
