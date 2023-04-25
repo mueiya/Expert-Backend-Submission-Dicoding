@@ -19,7 +19,7 @@
             port: ${{ secrets.SSH_PORT }}
             script: |
               cd ~/Expert-Backend-Submission-Dicoding
-              git pull ${{ secrets.GIT_URL_TOKEN}} master
+              git pull origin master
               npm install
               npm run migrate up
               pm2 restart Expert-Backend-Submission-Dicoding
