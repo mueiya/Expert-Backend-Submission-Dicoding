@@ -3,7 +3,7 @@ const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
 
-describe('/threads endpoint', () => {
+describe('/comments endpoint', () => {
   afterAll(async () => {
     await pool.end();
   });

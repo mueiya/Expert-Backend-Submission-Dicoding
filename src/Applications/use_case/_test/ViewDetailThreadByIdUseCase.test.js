@@ -4,6 +4,7 @@ const DetailReply = require('../../../Domains/replies/entities/DetailReply');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const CommentLikeRepository = require('../../../Domains/commentLikes/CommentLikeRepository');
 const ViewDetailThreadByIdUseCase = require('../ViewDetailThreadByIdUseCase');
 
 describe('GetDetailThreadByIdUseCase', () => {
@@ -43,6 +44,7 @@ describe('GetDetailThreadByIdUseCase', () => {
               },
             ],
             content: 'Akhirnya aku bisa bernapas',
+            likeCount: 2,
           },
           {
             id: 'comment-2345',
@@ -57,6 +59,7 @@ describe('GetDetailThreadByIdUseCase', () => {
               },
             ],
             content: '**komentar telah dihapus**',
+            likeCount: 1,
           },
         ],
       },
@@ -123,6 +126,7 @@ describe('GetDetailThreadByIdUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
     /** mock needed function */
     mockReplyRepository.getReplyByCommentId = jest.fn((commentId) => {
@@ -130,6 +134,13 @@ describe('GetDetailThreadByIdUseCase', () => {
         return Promise.resolve(mockDetailReply1);
       } else if (commentId === 'comment-2345') {
         return Promise.resolve(mockDetailReply2);
+      }
+    });
+    mockCommentLikeRepository.getCommentLikeCount = jest.fn((commentId) => {
+      if (commentId === 'comment-1234') {
+        return Promise.resolve(2);
+      } else if (commentId === 'comment-2345') {
+        return Promise.resolve(1);
       }
     });
     mockCommentRepository.getCommentByThreadId = jest.fn(() => Promise.resolve(mockDetailComment));
@@ -140,6 +151,7 @@ describe('GetDetailThreadByIdUseCase', () => {
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     // Action
@@ -148,7 +160,10 @@ describe('GetDetailThreadByIdUseCase', () => {
     // Assert
     expect(detailThread).toStrictEqual(expectedThread);
     expect(mockThreadRepository.getDetailThreadById).toBeCalledWith(useCasePayload.id);
+    expect(mockCommentLikeRepository.getCommentLikeCount).toBeCalledWith(mockDetailComment.comments[0].id);
+    expect(mockCommentLikeRepository.getCommentLikeCount).toBeCalledWith(mockDetailComment.comments[1].id);
     expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(useCasePayload.id);
     expect(mockReplyRepository.getReplyByCommentId).toBeCalledWith(mockDetailComment.comments[0].id);
+    expect(mockReplyRepository.getReplyByCommentId).toBeCalledWith(mockDetailComment.comments[1].id);
   });
 });

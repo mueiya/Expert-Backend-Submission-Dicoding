@@ -113,6 +113,10 @@ const ServerTestHelper = {
   async cleanRepliesTable() {
     await pool.query('DELETE FROM replies WHERE 1=1');
   },
+
+  async cleanCommentLikesTable() {
+    await pool.query('DELETE FROM comment_likes WHERE 1=1');
+  },
 };
 
 module.exports = ServerTestHelper;
