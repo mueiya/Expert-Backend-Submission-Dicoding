@@ -44,7 +44,7 @@ describe('GetDetailThreadByIdUseCase', () => {
               },
             ],
             content: 'Akhirnya aku bisa bernapas',
-            likeCount: '2',
+            likeCount: 2,
           },
           {
             id: 'comment-2345',
@@ -59,7 +59,7 @@ describe('GetDetailThreadByIdUseCase', () => {
               },
             ],
             content: '**komentar telah dihapus**',
-            likeCount: '1',
+            likeCount: 1,
           },
         ],
       },
@@ -138,9 +138,9 @@ describe('GetDetailThreadByIdUseCase', () => {
     });
     mockCommentLikeRepository.getCommentLikeCount = jest.fn((commentId) => {
       if (commentId === 'comment-1234') {
-        return Promise.resolve('2');
+        return Promise.resolve(2);
       } else if (commentId === 'comment-2345') {
-        return Promise.resolve('1');
+        return Promise.resolve(1);
       }
     });
     mockCommentRepository.getCommentByThreadId = jest.fn(() => Promise.resolve(mockDetailComment));
