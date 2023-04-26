@@ -36,7 +36,7 @@ describe('LikeCommentUseCase', () => {
     await likeCommentUseCase.execute(useCasePayload);
 
     // Assert
-    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload.threadId, useCasePayload.commentId);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload.commentId, useCasePayload.threadId);
     expect(mockCommentLikeRepository.verifyCommentLikeAvailability).toBeCalledWith(useCasePayload.commentId, useCasePayload.owner);
     expect(mockCommentLikeRepository.addCommentLike).toBeCalledWith(useCasePayload.commentId, useCasePayload.owner);
   });
@@ -69,7 +69,7 @@ describe('LikeCommentUseCase', () => {
     await likeCommentUseCase.execute(useCasePayload);
 
     // Assert
-    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload.threadId, useCasePayload.commentId);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(useCasePayload.commentId, useCasePayload.threadId);
     expect(mockCommentLikeRepository.verifyCommentLikeAvailability).toBeCalledWith(useCasePayload.commentId, useCasePayload.owner);
     expect(mockCommentLikeRepository.deleteCommentLike).toBeCalledWith(useCasePayload.commentId, useCasePayload.owner);
   });

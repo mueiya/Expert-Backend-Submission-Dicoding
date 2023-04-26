@@ -7,7 +7,7 @@ class LikeCommentUseCase {
 
   async execute(useCasePayload) {
     const {threadId, commentId, owner} = useCasePayload;
-    await this._commentRepository.verifyCommentAvailability(threadId, commentId);
+    await this._commentRepository.verifyCommentAvailability(commentId, threadId);
     const liked = await this._commentLikeRepository.verifyCommentLikeAvailability(commentId, owner);
 
     if (liked) {
