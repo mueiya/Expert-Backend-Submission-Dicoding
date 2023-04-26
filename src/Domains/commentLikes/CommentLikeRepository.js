@@ -8,7 +8,7 @@ class CommentLikeRepository {
   async deleteCommentLike(commentId, owner) {
     throw new Error('COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
-  async getCommentLikeCount(commentId, owner) {
+  async getCommentLikeCount(commentId) {
     throw new Error('COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }
