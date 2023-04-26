@@ -7,15 +7,15 @@ exports.up = (pgm) => {
     },
     date: {
       type: 'TEXT',
-      primaryKey: true,
+      notNull: true,
     },
     comment: {
       type: 'VARCHAR(50)',
-      primaryKey: true,
+      notNull: true,
     },
     owner: {
       type: 'VARCHAR(50)',
-      primaryKey: true,
+      notNull: true,
     },
   });
 
