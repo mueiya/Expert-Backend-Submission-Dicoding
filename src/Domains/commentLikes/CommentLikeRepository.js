@@ -1,11 +1,14 @@
 class CommentLikeRepository {
-  async addCommentLike(commentId) {
+  async verifyCommentLikeAvailability(commentId, owner) {
     throw new Error('COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
-  async deleteCommentLike(commentId) {
+  async addCommentLike(commentId, owner) {
     throw new Error('COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
-  async getCommentLike(commentId) {
+  async deleteCommentLike(commentId, owner) {
+    throw new Error('COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
+  async getCommentLikeCount(commentId, owner) {
     throw new Error('COMMENT_LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }
