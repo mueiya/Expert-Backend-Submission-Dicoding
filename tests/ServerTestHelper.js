@@ -32,6 +32,36 @@ const ServerTestHelper = {
 
     return authResponse;
   },
+  async addAuthDummy2(server) {
+    const dummyUser = {
+      username: 'userDummy2',
+      password: 'passwordDummy2',
+      fullname: 'fullnameDummy2',
+    };
+
+    await server.inject({
+      method: 'POST',
+      url: '/users',
+      payload: {
+        username: dummyUser.username,
+        password: dummyUser.password,
+        fullname: dummyUser.fullname,
+      },
+    });
+
+    const auth = await server.inject({
+      method: 'POST',
+      url: '/authentications',
+      payload: {
+        username: dummyUser.username,
+        password: dummyUser.password,
+      },
+    });
+
+    const authResponse = JSON.parse(auth.payload);
+
+    return authResponse;
+  },
 
   async addThreadDummy(server, auth) {
     const dummyThread = {
@@ -96,6 +126,16 @@ const ServerTestHelper = {
     const replyResponse = JSON.parse(reply.payload);
 
     return replyResponse.data.addedReply.id;
+  },
+
+  async addCommentLikeDummy(server, commentId, threadId, auth) {
+    await server.inject({
+      method: 'PUT',
+      url: `/threads/${threadId}/comments/${commentId}/likes`,
+      headers: {
+        Authorization: `Bearer ${auth.data.accessToken}`,
+      },
+    });
   },
 
   async cleanUsersTable() {
