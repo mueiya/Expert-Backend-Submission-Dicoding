@@ -148,7 +148,6 @@ describe('/threads endpoint', () => {
       expect(responseJson.message).toEqual('thread with id: xxxxx not found');
     });
     it('should respon 200 ', async () => {
-      await jest.setTimeout(10000);
       // Arrange
       const server = await createServer(container);
 
@@ -203,6 +202,6 @@ describe('/threads endpoint', () => {
         expect(comment.content).toBeDefined();
         expect(comment.likeCount).toBeDefined();
       });
-    });
+    }, 10000);
   });
 });
