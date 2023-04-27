@@ -13,6 +13,8 @@ describe('/threads endpoint', () => {
     await ServerTestHelper.cleanUsersTable();
   });
 
+  beforeEach(() => jest.setTimeout(10000));
+
   describe('when POST /threads', () => {
     it('should response 401 and throw AuthorizedError when not given authentication', async () => {
       // Arrange
@@ -148,7 +150,6 @@ describe('/threads endpoint', () => {
       expect(responseJson.message).toEqual('thread with id: xxxxx not found');
     });
     it('should respon 200 ', async () => {
-      jest.setTimeout(20 * 1000);
       // Arrange
       const server = await createServer(container);
 
