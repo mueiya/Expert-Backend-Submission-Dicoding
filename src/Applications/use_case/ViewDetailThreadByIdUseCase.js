@@ -48,8 +48,6 @@ class ViewDetailThreadByIdUseCase {
       })),
     };
 
-    console.log(JSON.stringify(remappedThread, null, 2));
-
     return {thread: remappedThread};
   }
 }
