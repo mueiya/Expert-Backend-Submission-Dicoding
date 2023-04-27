@@ -176,7 +176,7 @@ describe('ReplyRepository postgres', () => {
       const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
 
       // Action and Assert
-      const detailReply = replyRepositoryPostgres.getReplyByCommentId('comment-123');
+      const detailReply = replyRepositoryPostgres.getReplyByCommentId(['comment-123']);
       await expect(detailReply).resolves.toStrictEqual(new DetailReply([
         {
           id: 'reply-1234',
