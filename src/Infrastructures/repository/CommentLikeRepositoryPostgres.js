@@ -47,18 +47,32 @@ class CommentLikeRepositoryPostgres extends CommentLikeRepository {
     await this._pool.query(query);
   }
 
-  async getCommentLikeCount(commentId) {
+  async getCommentLikeCount(commentIds) {
     const query = {
       text: `
-        SELECT *
+        SELECT comment, COUNT(*) as likecount
         FROM comment_likes
-        WHERE comment = $1`,
-      values: [commentId],
+        WHERE comment = ANY($1::text[])
+        GROUP BY comment`,
+      values: [commentIds],
     };
 
     const result = await this._pool.query(query);
 
-    return result.rowCount;
+    const likeCountMap = new Map();
+    result.rows.forEach((row) => {
+      likeCountMap.set(row.comment, row.likecount);
+    });
+
+    const commentLikes = commentIds.map((commentId) => {
+      const likeCount = likeCountMap.get(commentId);
+      return {
+        comment: commentId,
+        likeCount: likeCount === undefined ? 0 : parseInt(likeCount),
+      };
+    });
+
+    return commentLikes;
   }
 }
 

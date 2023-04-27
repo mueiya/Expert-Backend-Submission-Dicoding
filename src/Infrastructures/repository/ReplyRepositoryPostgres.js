@@ -71,7 +71,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
         replies.deleted
         FROM replies
         INNER JOIN users ON replies.owner = users.id
-        WHERE comment = $1
+        WHERE comment =  ANY($1::text[])
         ORDER BY replies.date ASC
         `,
       values: [commentId],
