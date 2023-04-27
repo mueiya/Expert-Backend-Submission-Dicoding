@@ -96,7 +96,7 @@ describe('CommentLikeRepositoryPostgres', () => {
     });
   });
   describe('getCommentLikeCount function', () => {
-    it('should delete like', async () => {
+    it('returning array of object {comment, likeCount}', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({
         id: 'user-123',
@@ -109,8 +109,16 @@ describe('CommentLikeRepositoryPostgres', () => {
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
       });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-234',
+      });
       await CommentLikesTableTestHelper.addLike({
         id: 'like-123',
+        owner: 'user-123',
+      });
+      await CommentLikesTableTestHelper.addLike({
+        id: 'like-454',
+        comment: 'comment-234',
         owner: 'user-123',
       });
       await CommentLikesTableTestHelper.addLike({
@@ -121,10 +129,13 @@ describe('CommentLikeRepositoryPostgres', () => {
       const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, {});
 
       // Action
-      const likeCount = await commentLikeRepositoryPostgres.getCommentLikeCount('comment-123', 'user-123');
+      const likeCount = await commentLikeRepositoryPostgres.getCommentLikeCount(['comment-123', 'comment-234']);
 
       // Assert
-      expect(likeCount).toEqual(2);
+      expect(likeCount).toEqual([
+        {'comment': 'comment-123', 'likeCount': 2},
+        {'comment': 'comment-234', 'likeCount': 1},
+      ]);
     });
   });
 });
