@@ -13,7 +13,7 @@ describe('/threads endpoint', () => {
     await ServerTestHelper.cleanUsersTable();
   });
 
-  beforeEach(() => jest.setTimeout(10000));
+  beforeAll(() => jest.setTimeout(10000));
 
   describe('when POST /threads', () => {
     it('should response 401 and throw AuthorizedError when not given authentication', async () => {
