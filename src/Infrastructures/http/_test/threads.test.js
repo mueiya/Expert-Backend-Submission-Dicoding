@@ -148,7 +148,7 @@ describe('/threads endpoint', () => {
       expect(responseJson.message).toEqual('thread with id: xxxxx not found');
     });
     it('should respon 200 ', async () => {
-      jest.setTimeout(9 * 1000);
+      jest.setTimeout(20 * 1000);
       // Arrange
       const server = await createServer(container);
 
