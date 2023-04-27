@@ -153,7 +153,17 @@ describe('/threads endpoint', () => {
       const server = await createServer(container);
 
       const authentication = await ServerTestHelper.addAuthDummy(server);
+      const authentication2 = await ServerTestHelper.addAuthDummy2(server);
       const threadId = await ServerTestHelper.addThreadDummy(server, authentication);
+      const commentId = await ServerTestHelper.addCommentDummy(server, threadId, authentication);
+      await ServerTestHelper.addCommentLikeDummy(server, commentId, threadId, authentication);
+      await ServerTestHelper.addCommentLikeDummy(server, commentId, threadId, authentication2);
+      const commentId2 = await ServerTestHelper.addCommentDummy(server, threadId, authentication);
+      await ServerTestHelper.addCommentLikeDummy(server, commentId2, threadId, authentication2);
+      await ServerTestHelper.addCommentDummy(server, threadId, authentication2);
+      await ServerTestHelper.addReplyDummy(server, commentId, threadId, authentication);
+      await ServerTestHelper.addReplyDummy(server, commentId, threadId, authentication2);
+      await ServerTestHelper.addReplyDummy(server, commentId2, threadId, authentication);
 
       // Action
       const response = await server.inject({
@@ -166,7 +176,33 @@ describe('/threads endpoint', () => {
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.message).toEqual('get thread detail success');
+      /** Assertion response data */
       expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.id).toBeDefined();
+      expect(responseJson.data.thread.title).toBeDefined();
+      expect(responseJson.data.thread.body).toBeDefined();
+      expect(responseJson.data.thread.date).toBeDefined();
+      expect(responseJson.data.thread.username).toBeDefined();
+      expect(responseJson.data.thread.comments).toBeDefined();
+      expect(Array.isArray(responseJson.data.thread.comments)).toBeTruthy();
+
+      responseJson.data.thread.comments.forEach((comment) => {
+        expect(comment.id).toBeDefined();
+        expect(comment.username).toBeDefined();
+        expect(comment.date).toBeDefined();
+        expect(comment.replies).toBeDefined();
+        expect(Array.isArray(comment.replies)).toBeTruthy();
+
+        comment.replies.forEach((reply) => {
+          expect(reply.id).toBeDefined();
+          expect(reply.username).toBeDefined();
+          expect(reply.date).toBeDefined();
+          expect(reply.content).toBeDefined();
+        });
+
+        expect(comment.content).toBeDefined();
+        expect(comment.likeCount).toBeDefined();
+      });
     });
   });
 });
