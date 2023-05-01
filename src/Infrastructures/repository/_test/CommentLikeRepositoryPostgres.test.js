@@ -137,5 +137,29 @@ describe('CommentLikeRepositoryPostgres', () => {
         {'comment': 'comment-234', 'likeCount': 1},
       ]);
     });
+    it('returning array of object {comment, likeCount = 0} if there is like', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+      });
+      await UsersTableTestHelper.addUser({
+        id: 'user-234',
+        username: 'halomanusia',
+      });
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+      });
+
+      const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, {});
+
+      // Action
+      const likeCount = await commentLikeRepositoryPostgres.getCommentLikeCount(['comment-123']);
+
+      // Assert
+      expect(likeCount).toEqual([
+        {'comment': 'comment-123', 'likeCount': 0},
+      ]);
+    });
   });
 });
