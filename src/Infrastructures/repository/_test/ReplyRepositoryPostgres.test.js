@@ -105,6 +105,24 @@ describe('ReplyRepository postgres', () => {
       expect(replyRepositoryPostgres.verifyReplyAvailability('reply-123', 'falseCommentId', 'thread-123')).rejects.toThrowError(NotFoundError);
       expect(replyRepositoryPostgres.verifyReplyAvailability('falseReplyId', 'comment-123', 'thread-123')).rejects.toThrowError(NotFoundError);
     });
+    it('should resolves and not throw NotFoundErro when reply is found', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-123',
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+      });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+      });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action and Assert
+      expect(replyRepositoryPostgres.verifyReplyAvailability('reply-123', 'comment-123', 'thread-123')).resolves.not.toThrowError(NotFoundError);
+    });
   });
   describe('verifyReplyOwner', () => {
     it('should throw AuthorizationError when Owner and user-id doesnt match', async () => {
@@ -123,6 +141,23 @@ describe('ReplyRepository postgres', () => {
 
       // Action and Assert
       await expect(replyRepositoryPostgres.verifyReplyOwner('reply-123', 'falseUserId')).rejects.toThrowError(AuthorizationError);
+    });
+    it('should resolves and not throw AuthorizationError owner is correct', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+      });
+      await ThreadsTableTestHelper.addThread({});
+      await CommentsTableTestHelper.addComment({});
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        owner: 'user-123',
+      });
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action and Assert
+      await expect(replyRepositoryPostgres.verifyReplyOwner('reply-123', 'user-123')).resolves.not.toThrowError(AuthorizationError);
     });
   });
   describe('getReplyByCommentId', () => {
